@@ -8,7 +8,7 @@ app.use(express.static("./public"));
 
 // GET
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./public/index.html"));
+  res.status(200).sendFile(path.resolve(__dirname, "./public/index.html"));
 });
 
 // handles all HTTP verbs
@@ -17,6 +17,7 @@ app.all("*", (req, res) => {
 });
 
 // Server Listener
-app.listen(3000, () => {
-  console.log("Server is listening on 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server  is listening on ${PORT}`);
 });
