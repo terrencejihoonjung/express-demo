@@ -1,19 +1,20 @@
 // Import express framework
 import express from "express";
-import path from "path";
+import logger from "./logger.mjs";
+import authorize from "./authorize.mjs";
 const app = express();
 
-// Setup static and middleware
-app.use(express.static("./public"));
+// Use middleware after routing match (order matters)
+// app.use([logger, authorize]);
+app.use(express.static("./public")); // have acces to static assets
 
-// GET
+// req => middleware => res
 app.get("/", (req, res) => {
-  res.status(200).sendFile(path.resolve(__dirname, "./public/index.html"));
+  res.send("Home");
 });
 
-// handles all HTTP verbs
-app.all("*", (req, res) => {
-  res.status(404).send("<h1>resource not found</h1>");
+app.get("/about", [logger, authorize], (req, res) => {
+  res.send("About");
 });
 
 // Server Listener
